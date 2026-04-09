@@ -1,0 +1,71 @@
+/* Dock Behavior Styles */
+
+.app-container {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+.app-container:active {
+  cursor: grabbing;
+}
+
+/* Indicator Tab (HIDDEN State) */
+.indicator-tab {
+  position: relative;
+  right: 10px;
+  left: 10px;
+  bottom: 0;
+  width: 35px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: rgba(10, 15, 28, 0.95);
+  border: 2px solid #00d4ff;
+  border-right: none;
+  border-radius: 15px 0 0 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  z-index: 10000;
+  -webkit-app-region: no-drag;
+  user-select: none;
+}
+
+.indicator-tab:hover {
+  background: rgba(10, 15, 28, 1);
+  border-color: #00ffff;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+  width: 45px;
+}
+
+.indicator-icon {
+  font-size: 14px;
+  color: #00d4ff;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.indicator-text {
+  font-size: 8px;
+  color: #00d4ff;
+  font-weight: bold;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
