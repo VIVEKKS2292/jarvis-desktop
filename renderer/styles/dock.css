@@ -12,10 +12,10 @@
 
 /* Indicator Tab (HIDDEN State) */
 .indicator-tab {
-  position: relative;
-  right: 10px;
-  left: 10px;
-  bottom: 0;
+  position: fixed;
+  right: 0;
+  bottom: 50%;
+  transform: translateY(50%);
   width: 35px;
   height: 120px;
   display: flex;
@@ -25,7 +25,6 @@
   gap: 4px;
   background: rgba(10, 15, 28, 0.95);
   border: 2px solid #00d4ff;
-  border-right: none;
   border-radius: 15px 0 0 15px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -40,6 +39,7 @@
   border-color: #00ffff;
   box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
   width: 45px;
+  right: -10px;
 }
 
 .indicator-icon {

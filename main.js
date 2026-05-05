@@ -1,5 +1,4 @@
 const { app, BrowserWindow, screen, Tray, Menu, ipcMain } = require("electron");
-const AutoLaunch = require("auto-launch");
 const path = require("path");
 const fs = require("fs");
 
@@ -9,9 +8,6 @@ let windowPos = { x: 0, y: 0 };
 
 // 📁 Notes file path
 const notesPath = path.join(app.getPath("userData"), "notes.json");
-
-// AutoLaunch will be enabled in production only
-let jarvisAutoLauncher;
 
 // ⏱️ DOCK BEHAVIOR STATE
 let dockState = "EXPANDED"; // EXPANDED | DOCKED | HIDDEN
@@ -81,8 +77,8 @@ function transitionToHidden() {
   const { width, height } = display.workAreaSize;
 
   // Position at bottom-right corner, tab touching right edge
-  const newX = width;
-  const newY = height - 120;
+  const newX = width - 420;
+  const newY = height - 420;
 
   win.setSize(WINDOW_SIZES.HIDDEN.width, WINDOW_SIZES.HIDDEN.height);
   win.setPosition(newX, newY);
