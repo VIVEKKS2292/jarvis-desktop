@@ -4,9 +4,11 @@ import { moduleMap } from "../config/modules";
 const ModuleScreen = ({
     module,
     onBack,
+    onOpenSettings
 }: {
     module: string;
     onBack: () => void;
+    onOpenSettings?: () => void;
 }) => {
     const ActiveComponent = moduleMap[module];
 
@@ -86,6 +88,13 @@ const ModuleScreen = ({
                     >
                         ←
                     </button>
+                    <div style={{ flex: 1 }} />
+                    {module !== "settings" && onOpenSettings && (
+                        <button onClick={onOpenSettings} title="Settings" style={{
+                            cursor: "pointer", fontSize: 18, color: "white", width: 40, height: 40,
+                            background: "rgba(0,212,255,0.1)", border: "1px solid rgba(0,212,255,0.3)", borderRadius: 8,
+                        }}>⚙</button>
+                    )}
                 </div>
 
                 {/* 📋 CONTENT AREA WITH CUSTOM SCROLLBAR */}

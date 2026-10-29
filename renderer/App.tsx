@@ -1,56 +1,49 @@
-import React, { useState, useEffect } from "react"
-import HexMenu from "./components/HexMenu"
-import ModuleScreen from "./components/ModuleScreen"
-import "./styles/dock.css"
+import React, { useState, useEffect } from "react";
+import HexMenu from "./components/HexMenu";
+import ModuleScreen from "./components/ModuleScreen";
+import { ChatProvider } from "./hooks/ChatContext";
+import type { DockState } from "./types/global";
+import "./styles/dock.css";
 
 const App: React.FC = () => {
-  const [activeModule, setActiveModule] = useState<string | null>(null)
-  const [dockState, setDockState] = useState<"EXPANDED" | "DOCKED" | "HIDDEN">("EXPANDED")
+  const [activeModule, setActiveModule] = useState<string | null>(null);
+  const [dockState, setDockState] = useState<DockState>("EXPANDED");
 
-  useEffect(() => {
-    // Listen for dock state changes from main process
-    const unsubscribe = window.ipcRenderer?.on("dock-state-changed", (data: any) => {
-      console.log("📊 Dock state changed:", data.state);
-      setDockState(data.state);
-    });
+  // Dock state pushed from the main process
+  useEffect(() => window.api.onDockStateChanged((d) => setDockState(d.state)), []);
 
-    return () => {
-      if (unsubscribe) unsubscribe();
-    };
-  }, []);
+  // Global hotkey: jump straight to chat (the Chat screen focuses its own input)
+  useEffect(() => window.api.onFocusChat(() => setActiveModule("chat")), []);
 
-  // Reset idle timer on any user interaction
-  const handleUserActivity = () => {
-    // Activity is tracked by main process
+  // The centre "AI core" button used to select "ai-core", which has no module -> stuck on "Loading..."
+  const handleSelect = (id: string) => setActiveModule(id === "ai-core" ? "chat" : id);
+
+  const handleRestoreClick = () => {
+    void window.api.restoreWindow();
   };
-
-  const handleRestoreClick = async () => {
-    if (window.ipcRenderer) {
-      await window.ipcRenderer.invoke("restore-window");
-    }
-  };
-
-  if (dockState === "HIDDEN") {
-    return (
-      <div className="indicator-tab" onClick={handleRestoreClick}>
-        <div className="indicator-icon">J</div>
-        <div className="indicator-text">JARVIS</div>
-      </div>
-    );
-  }
 
   return (
-    <div className="app-container" onClick={handleUserActivity}>
-      {!activeModule ? (
-        <HexMenu onSelect={setActiveModule} />
+    <ChatProvider>
+      {dockState === "HIDDEN" ? (
+        <div className="indicator-tab" onClick={handleRestoreClick}>
+          <div className="indicator-icon">J</div>
+          <div className="indicator-text">JARVIS</div>
+        </div>
       ) : (
-        <ModuleScreen
-          module={activeModule}
-          onBack={() => setActiveModule(null)}
-        />
+        <div className="app-container">
+          {!activeModule ? (
+            <HexMenu onSelect={handleSelect} />
+          ) : (
+            <ModuleScreen
+              module={activeModule}
+              onBack={() => setActiveModule(null)}
+              onOpenSettings={() => setActiveModule("settings")}
+            />
+          )}
+        </div>
       )}
-    </div>
+    </ChatProvider>
   );
-}
+};
 
-export default App
+export default App;

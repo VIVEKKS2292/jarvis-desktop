@@ -13,8 +13,7 @@ const System: React.FC = () => {
     const [info, setInfo] = useState<SystemInfo | null>(null)
 
     useEffect(() => {
-        const data = (window as any).api.getSystemInfo()
-        setInfo(data)
+        window.api.getSystemInfo().then(setInfo)
     }, [])
 
     const formatGB = (bytes: number) =>

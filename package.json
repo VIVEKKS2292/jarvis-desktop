@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently -k \"vite\" \"wait-on http-get://localhost:5173 && cross-env NODE_ENV=development electronmon .\"",
     "build": "vite build",
     "start": "electron ."
   },
@@ -16,15 +16,17 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
+    "concurrently": "^10.0.6",
+    "cross-env": "^10.1.0",
     "electron": "^41.0.0",
     "electronmon": "^2.0.4",
-    "vite": "^8.0.0"
+    "svgo": "^4.1.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.0.0",
+    "wait-on": "^9.5.1"
   },
   "dependencies": {
-    "@google/genai": "^1.46.0",
-    "@google/generative-ai": "^0.24.1",
-    "auto-launch": "^5.0.6",
-    "electron-reload": "^2.0.0-alpha.1",
+    "@google/genai": "^1.52.0",
     "konva": "^10.2.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
